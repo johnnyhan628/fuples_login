@@ -5,7 +5,7 @@ spring :
     application : 
         name : fuples
     datasource:
-        url: jdbc:sqlite:./fuples.db
+        url: jdbc:sqlite:../fuples.db
         driver-class-name: org.sqlite.JDBC
 
     jpa:
