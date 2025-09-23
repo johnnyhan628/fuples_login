@@ -25,6 +25,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.xerial:sqlite-jdbc:3.46.0.0'
+	implementation 'org.hibernate.orm:hibernate-community-dialects:6.5.2.Final'
 }
 
 tasks.named('test') {
