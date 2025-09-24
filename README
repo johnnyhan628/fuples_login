@@ -1,0 +1,39 @@
+*HS256 공유키를 사용하였습니다
+    - HS256은 대칭키, RS256은 비대칭키로 HS256은 하나의 공유 키를 사용하고 RS256은 키 쌍을 사용하는 것으로 알고있습니다.
+    - 소규모 과제 제출용으로는 내부에서만 검증하기에 적합한 HS256 암호화 기법이 사용하기에 가볍다고 생각하여 선택하게 되었습니다.
+
+*SQLite를 사용하였습니다.
+    - Test 환경에서 DB 서버를 새로 생성하기보다는 프로젝트와 같은 경로에 DB 파일을 두면 테스트에 용이하겠다고 생각했습니다.
+    - 프로젝트 root 경로에 두면 스키마나 데이터 변경 시 version change가 발생하므로 프로젝트 외부로 경로를 설정하였습니다.
+
+*환경변수샘플
+    #서버 설정
+    SERVER_PORT=8081
+    SPRING_APPLICATION_NAME=fuples
+
+    #데이터베이스 설정
+    SPRING_DATASOURCE_URL=jdbc:sqlite:../fuples.db
+    SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.sqlite.JDBC
+
+    #JPA 설정
+    SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    SPRING_JPA_SHOW_SQL=true
+    SPRING_JPA_HIBERNATE_DIALECT=org.hibernate.community.dialect.SQLiteDialect
+
+    #JWT
+    JWT_SECRET=Xl9VeVN5Zm01M3pwck1GbkBfI14jTWxjdlVmQGReNGpNLW1P
+
+*스키마
+    - 어플리케이션 기동 시 SQLite 스키마가 자동으로 생성됩니다.(JPA 설정 참고)
+    - 테이블 설명
+        1. users
+            id(PK, auth increase), email(unique), password_hash, name, role(default: USER), provider(LOCAL or KAKAO), provider_id, created_at, updated_at, token_version
+        2. refresh_tokens
+            id(PK, auto increase), user_id(FK, users 테이블의 id를 외래키로 가집니다), token_hash, revoked, expires_at, created_at
+
+*토큰
+    - access token은 1시간, refresh token은 7일 이후 만료됩니다.
+
+*테스트 방법
+    - API 명세를 문서화하고 테스트를 용이하게 하기 위해 swagger를 사용하였습니다.
+    - Spring app 실행 후 http://localhost:8081/swagger-ui/index.html를 통해 API 테스트가 가능합니다.
