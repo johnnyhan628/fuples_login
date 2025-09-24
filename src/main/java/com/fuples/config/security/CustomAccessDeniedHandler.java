@@ -24,7 +24,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         // Response DTO 객체 생성
-        ErrorCode error = ErrorCode.NO_PERMISSION;
+        ErrorCode error = ErrorCode.AUTH_FORBIDDEN;
         ApiResponse apiResponse = ResponseFactory.failure(error);
 
         // json 형태로 변환

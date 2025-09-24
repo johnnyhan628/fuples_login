@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(Long.valueOf(username)).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ACCESS_TOKEN));
+        User user = userRepository.findById(Long.valueOf(username)).orElseThrow(() -> new CustomException(ErrorCode.AUTH_TOKEN_EXPIRED));
         return new CustomUserDetails(user);
     }
 

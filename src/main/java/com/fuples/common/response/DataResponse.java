@@ -6,7 +6,7 @@ import lombok.Getter;
 public class DataResponse<T> extends ApiResponse {
     private final T data;
 
-    public DataResponse(boolean success, int code, String message, T data) {
+    public DataResponse(boolean success, String code, String message, T data) {
         super(success, code, message);
         this.data = data;
     }
