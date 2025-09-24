@@ -12,7 +12,7 @@ server:
 
     jpa:
         hibernate:
-            dl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+            ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
         show-sql: ${SPRING_JPA_SHOW_SQL:true}
         properties:
             hibernate:

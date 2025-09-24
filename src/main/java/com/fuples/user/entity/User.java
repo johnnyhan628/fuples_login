@@ -1,20 +1,16 @@
 package com.fuples.user.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
+import com.fuples.common.jpa.LocalDateTimeTextConverter;
 import com.fuples.user.enums.Provider;
 import com.fuples.user.enums.ProviderConverter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Table(
     name = "users",
-    indexes = {
-        @Index(name = "uk_users_email", columnList = "email", unique = true)
-    }
+    indexes = { @Index(name = "uk_users_email", columnList = "email", unique = true) }
 )
 @Entity
 @Getter
@@ -37,11 +33,6 @@ public class User {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    /**
-     * USER / ADMIN 만 저장하도록 사용처에서 보장
-     * (Role enum이 있다면 @Enumerated(EnumType.STRING)으로 교체 권장)
-     */
-
     @Builder.Default
     @Column(name = "role", nullable = false, length = 20)
     private String role = "USER";
@@ -53,11 +44,12 @@ public class User {
     @Column(name = "provider_id", length = 100)
     private String providerUserId;
 
-    @CreationTimestamp
+    // TEXT 컬럼에 "yyyy-MM-dd HH:mm:ss.SSS" 로 저장/조회
+    @Convert(converter = LocalDateTimeTextConverter.class)
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @Convert(converter = LocalDateTimeTextConverter.class)
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
@@ -65,6 +57,20 @@ public class User {
     @Column(name = "token_version", nullable = false)
     private Integer tokenVersion = 0;
 
+    /* === lifecycle === */
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        if (createdAt == null) createdAt = now;
+        if (updatedAt == null) updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    /* === helpers === */
     public void increaseTokenVersion() {
         this.tokenVersion = (this.tokenVersion == null ? 1 : this.tokenVersion + 1);
     }

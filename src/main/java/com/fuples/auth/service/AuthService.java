@@ -22,7 +22,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HexFormat;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -167,7 +166,13 @@ public class AuthService {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashed = digest.digest(token.getBytes(StandardCharsets.UTF_8));
-            return HexFormat.of().formatHex(hashed);
+            StringBuilder hex = new StringBuilder(hashed.length * 2);
+            for (byte b : hashed) {
+                int value = b & 0xFF;
+                hex.append(Character.forDigit(value >>> 4, 16));
+                hex.append(Character.forDigit(value & 0x0F, 16));
+            }
+            return hex.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Failed to hash refresh token", e);
         }
