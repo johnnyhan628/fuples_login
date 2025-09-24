@@ -1,12 +1,9 @@
 server:
-    port: 8081
+    port: ${SERVER_PORT:8081}
 
-spring : 
-    application : 
-        name : fuples
     datasource:
-        url: jdbc:sqlite:../fuples.db
-        driver-class-name: org.sqlite.JDBC
+        url: ${SPRING_DATASOURCE_URL:jdbc:sqlite:../fuples.db}
+        driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.sqlite.JDBC}
         hikari:
             connection-init-sql: |
                 PRAGMA foreign_keys=ON;
@@ -15,17 +12,17 @@ spring :
 
     jpa:
         hibernate:
-            ddl-auto: update
-        show-sql: true
+            dl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+        show-sql: ${SPRING_JPA_SHOW_SQL:true}
         properties:
             hibernate:
-                dialect: org.hibernate.community.dialect.SQLiteDialect
+                dialect: ${SPRING_JPA_HIBERNATE_DIALECT:org.hibernate.community.dialect.SQLiteDialect}
 
 jwt:
-    secret: Xl9VeVN5Zm01M3pwck1GbkBfI14jTWxjdlVmQGReNGpNLW1P
+    secret: ${JWT_SECRET:Xl9VeVN5Zm01M3pwck1GbkBfI14jTWxjdlVmQGReNGpNLW1P}
 
 security:
-    permitAll: # 토큰 없이 접근 허용
+    permitAll:
         - "/swagger-ui/**"
         - "/v3/api-docs/**"
         - "/swagger-ui.html"
