@@ -7,6 +7,11 @@ spring :
     datasource:
         url: jdbc:sqlite:../fuples.db
         driver-class-name: org.sqlite.JDBC
+        hikari:
+            connection-init-sql: |
+                PRAGMA foreign_keys=ON;
+                PRAGMA journal_mode=WAL;
+                PRAGMA synchronous=NORMAL;
 
     jpa:
         hibernate:
@@ -21,9 +26,14 @@ jwt:
 
 security:
     permitAll: # 토큰 없이 접근 허용
-    authenticated: # 토큰만 있으면 접근 가능
-    roles:
-      signing_up: # 토큰 + SIGNING_UP 권한이 있어야 접근 가능
-        - "/api/users/info"
-      approved: # 그 외 모든 요청은 토큰 + APPROVED 권한이 있어야 접근 가능
-        - "/**"
+        - "/swagger-ui/**"
+        - "/v3/api-docs/**"
+        - "/swagger-ui.html"
+        - "/api/auth/**"
+    authenticated:
+        - "/api/users"
+
+springdoc:
+    swagger-ui:
+        operations-sorter: method
+        tags-sorter: alpha
