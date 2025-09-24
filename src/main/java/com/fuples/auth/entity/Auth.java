@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class RefreshToken {
+public class Auth {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

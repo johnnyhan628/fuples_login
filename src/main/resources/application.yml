@@ -31,9 +31,15 @@ security:
         - "/swagger-ui.html"
         - "/api/auth/**"
     authenticated:
-        - "/api/users"
+        - "/api/users/**"
 
 springdoc:
     swagger-ui:
         operations-sorter: method
         tags-sorter: alpha
+
+logging:
+    level:
+        org.springframework.web: DEBUG
+        org.hibernate.SQL: DEBUG
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE

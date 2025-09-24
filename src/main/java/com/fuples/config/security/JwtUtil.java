@@ -15,9 +15,8 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtUtil {
-    private static final String BEARER = "Bearer ";
-    private static final long ACCESS_EXPIRATION_TIME = 5 * 60 * 1000;
-    private static final long REFRESH_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
+    private static final long ACCESS_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
+    private static final long REFRESH_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000; // 7 days
 
     private static final String USER_ID = "user_id";
     private static final String ROLE = "role";
@@ -34,32 +33,25 @@ public class JwtUtil {
     public String generateAccessToken(User user) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + ACCESS_EXPIRATION_TIME);
-
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .claim(USER_ID, user.getUserId())
-                .claim(ROLE, "USER")
+                .claim(ROLE, user.getRole())
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(secretKey, Jwts.SIG.HS256)
                 .compact();
-
-        return BEARER + jwt;
     }
 
     public String generateRefreshToken(User user) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + REFRESH_EXPIRATION_TIME);
 
-        String jwt = Jwts.builder()
+        return Jwts.builder()
             .claim(USER_ID, user.getUserId())
             .issuedAt(now)
             .expiration(expiration)
             .signWith(secretKey, Jwts.SIG.HS256)
             .compact();
-
-        String token = BEARER + jwt;
-
-        return token;
     }
 
     private Claims extractToken(String token) {

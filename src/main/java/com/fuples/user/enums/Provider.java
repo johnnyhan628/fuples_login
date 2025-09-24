@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Provider {
+    LOCAL("로컬"),
     KAKAO("카카오");
 
     private final String description;
